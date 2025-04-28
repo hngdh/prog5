@@ -8,7 +8,7 @@ public class Save extends Command {
     private Receiver receiver;
 
     public Save() {
-        super("save", "", "", "save collection to file");
+        super("save", "", "save collection to file");
     }
 
     public void setReceiver(Receiver receiver) {

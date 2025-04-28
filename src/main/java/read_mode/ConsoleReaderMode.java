@@ -3,9 +3,8 @@ package read_mode;
 import enums.FlatDataTypes;
 import enums.HouseDataTypes;
 import exceptions.LogException;
-import exceptions.UserException;
 import exceptions.WrongInputException;
-import io_utilities.LogUtil;
+import io_utilities.LogUtil2;
 import io_utilities.Printer;
 import io_utilities.working_with_input.Builder;
 import io_utilities.working_with_input.InputChecker;
@@ -16,23 +15,26 @@ import main_objects.Flat;
 import packets.Request;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ConsoleReaderMode implements ReadMode {
     public ConsoleReaderMode() {
     }
 
-    public Flat build(InputReader reader) throws UserException, LogException {
-        List<String> flatInfo = new ArrayList<>();
-        List<String> houseInfo = new ArrayList<>();
-        flatInfo.add("0");
+    public Flat build(InputReader reader) throws LogException {
+        List<String> flatInfo = new LinkedList<>();
+        List<String> houseInfo = new LinkedList<>();
 
         try {
             Printer.printInfo("Please type flat info");
+            flatInfo.add("0");
             flatInfo.add(getFlatUserInput(reader, FlatDataTypes.STRING, "Flat's name:", "must not be empty"));
             flatInfo.add(getFlatUserInput(reader, FlatDataTypes.COORDINATE_X, "Flat's X coordinate:", "must not be empty"));
             flatInfo.add(getFlatUserInput(reader, FlatDataTypes.COORDINATE_Y, "Flat's Y coordinate:", "must not be empty"));
+            flatInfo.add(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
             flatInfo.add(getFlatUserInput(reader, FlatDataTypes.AREA, "Flat's area:", "must not be empty and less than 700"));
             flatInfo.add(getFlatUserInput(reader, FlatDataTypes.ROOMS, "Flat's number of rooms:", "must not be empty"));
             flatInfo.add(getFlatUserInput(reader, FlatDataTypes.SPACE, "Flat's living space:", "must not be empty"));
@@ -45,11 +47,11 @@ public class ConsoleReaderMode implements ReadMode {
                 houseInfo.add(getHouseUserInput(reader, HouseDataTypes.LIFTS, "House's number of lifts:", "must not be empty and positive number"));
             } else {
                 for (int i = 0; i < 3; i++) {
-                    houseInfo.add(null);
+                    houseInfo.add("null");
                 }
             }
         } catch (IOException e) {
-            LogUtil.log(e);
+            LogUtil2.log(e);
             throw new LogException();
         }
         return Builder.buildFlat(flatInfo, houseInfo);
@@ -106,7 +108,7 @@ public class ConsoleReaderMode implements ReadMode {
     }
 
     @Override
-    public void executeMode(Invoker invoker, String commandName, String arg) throws UserException, LogException {
+    public void executeMode(Invoker invoker, String commandName, String arg) throws LogException {
         InputReader reader = new InputReader();
         reader.setReader();
         Request request = new Request(arg, build(reader));

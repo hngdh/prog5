@@ -7,7 +7,7 @@ public class Exit extends Command {
     private Receiver receiver;
 
     public Exit() {
-        super("exit", "", "", "exit the program (without saving)");
+        super("exit", "", "exit the program (without saving)");
     }
 
     public void setReceiver(Receiver receiver) {

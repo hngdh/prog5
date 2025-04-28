@@ -7,7 +7,7 @@ public class Remove_first extends Command {
     private Receiver receiver;
 
     public Remove_first() {
-        super("remove_first", "", "", "remove first element in collection");
+        super("remove_first", "", "remove first element in collection");
     }
 
     public void setReceiver(Receiver receiver) {

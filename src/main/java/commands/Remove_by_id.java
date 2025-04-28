@@ -1,6 +1,5 @@
 package commands;
 
-import exceptions.UserException;
 import iostream.Receiver;
 import packets.Request;
 
@@ -8,7 +7,7 @@ public class Remove_by_id extends Command {
     private Receiver receiver;
 
     public Remove_by_id() {
-        super("remove_by_id", "id", "", "remove element from collection by its id");
+        super("remove_by_id", "id", "remove element from collection by its id");
     }
 
     public void setReceiver(Receiver receiver) {
@@ -16,7 +15,7 @@ public class Remove_by_id extends Command {
     }
 
     @Override
-    public void execute(Request request) throws UserException {
+    public void execute(Request request) {
         receiver.remove_by_id(request);
     }
 }

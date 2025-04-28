@@ -6,6 +6,6 @@ public class WrongDataException extends Exception {
 
     @Override
     public String toString() {
-        return "There were problems uploading data.";
+        return "There were problems loading data.";
     }
 }

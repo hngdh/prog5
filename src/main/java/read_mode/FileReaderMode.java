@@ -6,7 +6,7 @@ import enums.CommandTypes;
 import enums.FlatDataTypes;
 import enums.HouseDataTypes;
 import exceptions.*;
-import io_utilities.LogUtil;
+import io_utilities.LogUtil2;
 import io_utilities.Printer;
 import io_utilities.working_with_input.*;
 import iostream.Invoker;
@@ -14,7 +14,7 @@ import main_objects.Flat;
 import packets.Request;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class FileReaderMode implements ReadMode {
@@ -28,16 +28,16 @@ public class FileReaderMode implements ReadMode {
         commandManager.init();
     }
 
-    public Flat build(InputReader reader) throws UserException, LogException {
-        List<String> flatInfo = new ArrayList<>();
-        List<String> houseInfo = new ArrayList<>();
-        flatInfo.add("0");
+    public Flat build(InputReader reader) throws LogException {
+        List<String> flatInfo = new LinkedList<>();
+        List<String> houseInfo = new LinkedList<>();
 
         try {
-            Printer.printInfo("Please type flat info");
+            flatInfo.add("0");
             flatInfo.add(getFlatFileInput(reader, FlatDataTypes.STRING));
             flatInfo.add(getFlatFileInput(reader, FlatDataTypes.COORDINATE_X));
             flatInfo.add(getFlatFileInput(reader, FlatDataTypes.COORDINATE_Y));
+            flatInfo.add(getFlatFileInput(reader, FlatDataTypes.DATE));
             flatInfo.add(getFlatFileInput(reader, FlatDataTypes.AREA));
             flatInfo.add(getFlatFileInput(reader, FlatDataTypes.ROOMS));
             flatInfo.add(getFlatFileInput(reader, FlatDataTypes.SPACE));
@@ -47,13 +47,13 @@ public class FileReaderMode implements ReadMode {
             houseInfo.add(getHouseFileInput(reader, HouseDataTypes.YEAR));
             houseInfo.add(getHouseFileInput(reader, HouseDataTypes.LIFTS));
         } catch (IOException e) {
-            LogUtil.log(e);
+            LogUtil2.log(e);
             throw new LogException();
         }
         return Builder.buildFlat(flatInfo, houseInfo);
     }
 
-    public String getFlatFileInput(InputReader reader, FlatDataTypes dataType) throws IOException, UserException {
+    public String getFlatFileInput(InputReader reader, FlatDataTypes dataType) throws IOException {
         String str = reader.readLine();
         boolean check = ObjInputChecker.checkFlatInput(str, dataType);
         if (check) {
@@ -63,7 +63,7 @@ public class FileReaderMode implements ReadMode {
         }
     }
 
-    public String getHouseFileInput(InputReader reader, HouseDataTypes dataType) throws IOException, UserException {
+    public String getHouseFileInput(InputReader reader, HouseDataTypes dataType) throws IOException {
         String str = reader.readLine();
         boolean check = ObjInputChecker.checkHouseInput(str, dataType);
         if (check) {
@@ -73,7 +73,7 @@ public class FileReaderMode implements ReadMode {
         }
     }
 
-    public String getNextCommand(InputReader reader) throws IOException, UserException, LogException {
+    public String getNextCommand(InputReader reader) throws IOException, LogException {
         String input = reader.readLine();
         if (input != null || input.isEmpty()) return null;
         if (!InputChecker.checkInput(input)) {
@@ -85,7 +85,7 @@ public class FileReaderMode implements ReadMode {
         return input;
     }
 
-    public void process(String currentFile, Invoker invoker) throws UserException, LogException, IOException {
+    public void process(String currentFile, Invoker invoker) throws LogException, IOException {
         try {
             invoker.call("execute_script", new Request(null, null));
             InputReader inputReader = new InputReader();
@@ -111,12 +111,12 @@ public class FileReaderMode implements ReadMode {
                 }
             }
         } catch (IOException e) {
-            LogUtil.log(e);
+            LogUtil2.log(e);
             throw new LogException();
         }
     }
 
     @Override
-    public void executeMode(Invoker invoker, String commandName, String arg) throws UserException, LogException {
+    public void executeMode(Invoker invoker, String commandName, String arg) throws LogException {
     }
 }

@@ -7,7 +7,7 @@ public class Help extends Command {
     private Receiver receiver;
 
     public Help() {
-        super("help", "", "", "display this dialog");
+        super("help", "", "display this dialog");
     }
 
     public void setReceiver(Receiver receiver) {

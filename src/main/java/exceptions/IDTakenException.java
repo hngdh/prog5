@@ -6,6 +6,6 @@ public class IDTakenException extends RuntimeException {
 
     @Override
     public String toString() {
-        return "Key taken, please choose another one.";
+        return "ID taken, please choose another one.";
     }
 }

@@ -7,7 +7,7 @@ public class Clear extends Command {
     private Receiver receiver;
 
     public Clear() {
-        super("clear", "", "", "clear collection");
+        super("clear", "", "clear collection");
     }
 
     public void setReceiver(Receiver receiver) {

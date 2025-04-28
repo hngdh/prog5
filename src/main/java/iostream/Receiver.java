@@ -2,7 +2,6 @@ package iostream;
 
 import cmd_utilities.CmdManager;
 import exceptions.LogException;
-import exceptions.UserException;
 import io_utilities.Printer;
 import main_objects.CollectionManager;
 import packets.Request;
@@ -21,9 +20,8 @@ public class Receiver {
     }
 
     public void help() {
-        cmdManager.getCommandCollection().forEach((name, command) -> {
-            command.getCommandInfo();
-        });
+        cmdManager.getCommandCollection().forEach((name, command) ->
+                Printer.printResult(command.getCommandInfo()));
     }
 
     public void clear() {
@@ -31,7 +29,7 @@ public class Receiver {
     }
 
     public void info() {
-        collectionManager.clear();
+        collectionManager.info();
     }
 
     public void show() {
@@ -54,11 +52,11 @@ public class Receiver {
         collectionManager.save();
     }
 
-    public void add(Request request) throws UserException {
+    public void add(Request request) {
         collectionManager.add(request);
     }
 
-    public void filter_contains_name(Request request) throws UserException {
+    public void filter_contains_name(Request request) {
         collectionManager.filter_contains_name(request);
     }
 
@@ -66,7 +64,7 @@ public class Receiver {
         collectionManager.print_field_ascending_house();
     }
 
-    public void remove_by_id(Request request) throws UserException {
+    public void remove_by_id(Request request) {
         collectionManager.remove_by_id(request);
     }
 
@@ -74,11 +72,11 @@ public class Receiver {
         collectionManager.remove_first();
     }
 
-    public void remove_lower(Request request) throws UserException {
+    public void remove_lower(Request request) {
         collectionManager.remove_lower(request);
     }
 
-    public void update(Request request) throws UserException {
+    public void update(Request request) {
         collectionManager.update(request);
     }
 }

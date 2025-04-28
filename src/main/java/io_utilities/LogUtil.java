@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * The {@code LogUtil} class provides utility methods for logging exceptions and stack traces using Log4j 2.
+ * The {@code LogUtil2} class provides utility methods for logging exceptions and stack traces using Log4j 2.
  * It centralizes logging functionality to ensure consistent logging practices throughout the application.
  */
 public class LogUtil {

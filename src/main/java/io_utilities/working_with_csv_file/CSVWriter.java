@@ -1,5 +1,8 @@
 package io_utilities.working_with_csv_file;
 
+import io_utilities.Printer;
+
+import java.awt.print.PrinterException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,15 +15,11 @@ public class CSVWriter {
         bufferedWriter = new BufferedWriter(new FileWriter(fileName));
     }
 
-    public void writeLines(List<StringBuilder> flats) throws IOException {
-        for (int i = 0; i < flats.size() - 1; i++) {
-            if (i < flats.size() - 1) {
-                bufferedWriter.write(flats.get(i).append(',').toString());
-                bufferedWriter.flush();
-            } else {
-                bufferedWriter.write(flats.get(i).append(System.lineSeparator()).toString());
-                bufferedWriter.flush();
-            }
+    public void writeLines(List<StringBuilder> flat) throws IOException {
+        for (int i = 0; i < flat.size() - 1; i++) {
+            bufferedWriter.write(flat.get(i).append(",").toString());
         }
+        bufferedWriter.write(flat.get(flat.size() - 1).toString() + "\n");
+        bufferedWriter.flush();
     }
 }

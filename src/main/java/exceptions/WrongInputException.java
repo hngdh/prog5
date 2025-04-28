@@ -6,6 +6,6 @@ public class WrongInputException extends RuntimeException {
 
     @Override
     public String toString() {
-        return "Wrong input! Please try again.";
+        return "Wrong input!";
     }
 }

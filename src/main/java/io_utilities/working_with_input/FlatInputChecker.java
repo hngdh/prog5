@@ -10,8 +10,12 @@ public class FlatInputChecker extends InputChecker {
         return checkString(name);
     }
 
-    public static boolean checkCoor(String coor) {
-        return checkInteger(coor);
+    public static boolean checkCoorX(String coor) {
+        return checkFloat(coor) && Float.parseFloat(coor) > -500;
+    }
+
+    public static boolean checkCoorY(String coor) {
+        return checkFloat(coor);
     }
 
     public static boolean checkArea(String area) {
@@ -34,9 +38,8 @@ public class FlatInputChecker extends InputChecker {
         if (str == null) {
             return false;
         }
-        str = str.toUpperCase();
         try {
-            Transport.valueOf(str);
+            Transport.valueOf(str.toUpperCase());
             return true;
         } catch (IllegalArgumentException e) {
             return false;

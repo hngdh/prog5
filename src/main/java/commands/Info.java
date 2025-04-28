@@ -7,7 +7,7 @@ public class Info extends Command {
     private Receiver receiver;
 
     public Info() {
-        super("info", "", "", "display information about collection");
+        super("info", "", "display information about collection");
     }
 
     public void setReceiver(Receiver receiver) {

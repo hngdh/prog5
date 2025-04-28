@@ -1,23 +1,32 @@
 package io_utilities.working_with_input;
 
 import exceptions.WrongInputException;
-import io_utilities.LogUtil;
+import io_utilities.LogUtil2;
 import io_utilities.Printer;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class InputChecker {
     public static boolean checkInput(String input) {
-        if (input == null || input.isEmpty()) {
+        input = input.trim();
+        return !input.isEmpty();
+    }
+
+    public static boolean checkID(String id) {
+        return checkInteger(id);
+    }
+
+    public static boolean checkDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        try {
+            LocalDate.parse(date, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
             return false;
         }
-        if (input.trim() != input) {
-            return false;
-        }
-        if (input.matches(" ( )+")) {
-            return false;
-        }
-        return !input.contains("\t");
     }
 
     public static boolean checkString(String input) {
@@ -32,17 +41,21 @@ public class InputChecker {
         return input.matches("-?[0-9]+");
     }
 
-    public static boolean checkBoolean(String input) {
-        return input.toLowerCase().strip() == "false" || input.toLowerCase().strip() == "true";
+    public static boolean checkFloat(String input) {
+        return input.matches("-?[0-9]+.?[0-9]*");
     }
 
-    public static boolean checkOptional(String act, String description) {
+    public static boolean checkBoolean(String input) {
+        return input.equalsIgnoreCase("false") || input.equalsIgnoreCase("true");
+    }
+
+    public static boolean checkOptional(String act, String description) throws IOException {
         try {
-            Printer.printInfo("Do you want to" + act + description + "? (yes/no)");
+            Printer.printInfo("Do you want to " + act + " " + description + "? (yes/no)");
             InputReader inputReader = new InputReader();
             inputReader.setReader();
             String input = "";
-            while (input.isEmpty()) {
+            while (true) {
                 input = inputReader.readLine();
                 if (input.equalsIgnoreCase("yes")) {
                     return true;
@@ -52,13 +65,12 @@ public class InputChecker {
                     try {
                         throw new WrongInputException();
                     } catch (WrongInputException e) {
-                        input = "";
-                        Printer.printError(inputReader.toString());
+                        Printer.printError(e.toString());
                     }
                 }
             }
         } catch (IOException e) {
-            LogUtil.log(e);
+            LogUtil2.log(e);
         }
         return false;
     }

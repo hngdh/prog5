@@ -6,6 +6,6 @@ public class WrongCommandException extends RuntimeException {
 
     @Override
     public String toString() {
-        return "Wrong command! Please try again.";
+        return "Wrong command!";
     }
 }

@@ -1,6 +1,5 @@
 package commands;
 
-import exceptions.UserException;
 import iostream.Receiver;
 import packets.Request;
 
@@ -8,7 +7,7 @@ public class Add extends Command {
     private Receiver receiver;
 
     public Add() {
-        super("add", "{element}", "", "add element to collection");
+        super("add", "{element}", "add element to collection");
     }
 
     public void setReceiver(Receiver receiver) {
@@ -16,7 +15,7 @@ public class Add extends Command {
     }
 
     @Override
-    public void execute(Request request) throws UserException {
+    public void execute(Request request) {
         receiver.add(request);
     }
 }

@@ -7,7 +7,7 @@ public class Min_by_coordinates extends Command {
     private Receiver receiver;
 
     public Min_by_coordinates() {
-        super("clear", "", "", "display object from collection with minimum coordinate");
+        super("clear", "", "display object from collection with minimum coordinate");
     }
 
     public void setReceiver(Receiver receiver) {

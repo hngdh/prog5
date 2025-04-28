@@ -11,7 +11,9 @@ public class ObjInputChecker {
         return switch (type) {
             case ID -> str.matches("[0-9]+");
             case STRING -> FlatInputChecker.checkName(str);
-            case COORDINATE_X, COORDINATE_Y -> FlatInputChecker.checkCoor(str);
+            case COORDINATE_X -> FlatInputChecker.checkCoorX(str);
+            case COORDINATE_Y -> FlatInputChecker.checkCoorY(str);
+            case DATE -> FlatInputChecker.checkDate(str);
             case AREA -> FlatInputChecker.checkArea(str);
             case ROOMS -> FlatInputChecker.checkNumberOfRooms(str);
             case SPACE -> FlatInputChecker.checkLivingSpace(str);
@@ -22,7 +24,7 @@ public class ObjInputChecker {
 
     public static boolean checkHouseInput(String str, HouseDataTypes type) {
         return switch (type) {
-            case STRING -> HouseInputChecker.checkString(str);
+            case STRING -> HouseInputChecker.checkName(str);
             case YEAR -> HouseInputChecker.checkYear(str);
             case LIFTS -> HouseInputChecker.checkNumberOfLifts(str);
         };
