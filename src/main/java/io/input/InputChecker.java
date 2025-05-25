@@ -45,12 +45,12 @@ public class InputChecker {
         return input.equalsIgnoreCase("false") || input.equalsIgnoreCase("true");
     }
 
-    public static boolean checkOptional(String act, String description) throws IOException {
+    public static boolean checkOptional(String act, String description) {
         try {
             Printer.printInfo("Do you want to " + act + " " + description + "? (yes/no)");
             InputReader inputReader = new InputReader();
             inputReader.setReader();
-            String input = "";
+            String input;
             while (true) {
                 input = inputReader.readLine();
                 if (input.equalsIgnoreCase("yes")) {

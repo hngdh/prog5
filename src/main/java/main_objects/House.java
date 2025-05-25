@@ -42,7 +42,7 @@ public class House {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof House)) return false;
-        return name == ((House) o).name && year == ((House) o).year && numberOfLifts == ((House) o).numberOfLifts;
+        return name.equals(((House) o).name) && year.equals(((House) o).year) && numberOfLifts.equals(((House) o).numberOfLifts);
     }
 
     @Override

@@ -3,6 +3,7 @@ package read_mode;
 import exceptions.LogException;
 import iostream.Invoker;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class ModeManager {
@@ -19,7 +20,7 @@ public class ModeManager {
         readModes.put(command, readMode);
     }
 
-    public void call(Invoker invoker, String commandName, String arg) throws LogException {
+    public void call(Invoker invoker, String commandName, String arg) throws LogException, IOException {
         readModes.get(commandName).executeMode(invoker, commandName, arg);
     }
 }

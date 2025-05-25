@@ -27,40 +27,35 @@ public class FileReaderMode implements ReaderMode {
         commandManager.init();
     }
 
-    public Flat build(LinkedList commandList) throws LogException {
+    public Flat build(LinkedList commandList) throws LogException, IOException {
         List<String> flatInfo = new LinkedList<>();
         List<String> houseInfo = new LinkedList<>();
 
-        try {
-            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.STRING));
-            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.COORDINATE_X));
-            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.COORDINATE_Y));
-            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.DATE));
-            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.AREA));
-            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.ROOMS));
-            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.SPACE));
-            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.HEATING));
-            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.TRANSPORT));
-            if (commandList.getFirst().toString().equals("yes")) {
+        flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.STRING));
+        flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.COORDINATE_X));
+        flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.COORDINATE_Y));
+        flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.DATE));
+        flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.AREA));
+        flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.ROOMS));
+        flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.SPACE));
+        flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.HEATING));
+        flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.TRANSPORT));
+        if (commandList.getFirst().toString().equals("yes")) {
+            commandList.removeFirst();
+            houseInfo.add(getHouseFileInput(commandList, HouseDataTypes.STRING));
+            houseInfo.add(getHouseFileInput(commandList, HouseDataTypes.YEAR));
+            houseInfo.add(getHouseFileInput(commandList, HouseDataTypes.LIFTS));
+        } else {
+            commandList.removeFirst();
+            for (int i = 0; i < 3; i++) {
+                houseInfo.add("null");
                 commandList.removeFirst();
-                houseInfo.add(getHouseFileInput(commandList, HouseDataTypes.STRING));
-                houseInfo.add(getHouseFileInput(commandList, HouseDataTypes.YEAR));
-                houseInfo.add(getHouseFileInput(commandList, HouseDataTypes.LIFTS));
-            } else {
-                commandList.removeFirst();
-                for (int i = 0; i < 3; i++) {
-                    houseInfo.add("null");
-                    commandList.removeFirst();
-                }
             }
-        } catch (IOException e) {
-            LogUtil.log(e);
-            throw new LogException();
         }
         return Builder.buildFlat(flatInfo, houseInfo);
     }
 
-    public String getFlatFileInput(LinkedList commandList, FlatDataTypes dataType) throws IOException {
+    public String getFlatFileInput(LinkedList commandList, FlatDataTypes dataType) {
         String str = commandList.getFirst().toString();
         commandList.removeFirst();
         boolean check = ObjInputChecker.checkFlatInput(str, dataType);
@@ -71,7 +66,7 @@ public class FileReaderMode implements ReaderMode {
         }
     }
 
-    public String getHouseFileInput(LinkedList commandList, HouseDataTypes dataType) throws IOException {
+    public String getHouseFileInput(LinkedList commandList, HouseDataTypes dataType) {
         String str = commandList.getFirst().toString();
         commandList.removeFirst();
         boolean check = ObjInputChecker.checkHouseInput(str, dataType);
@@ -82,7 +77,7 @@ public class FileReaderMode implements ReaderMode {
         }
     }
 
-    public String getCommand(LinkedList commandList) throws IOException {
+    public String getCommand(LinkedList commandList) {
         String input = commandList.getFirst().toString();
         commandList.removeFirst();
         if (input == null || input.isEmpty()) return null;

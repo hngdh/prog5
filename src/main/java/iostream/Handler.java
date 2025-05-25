@@ -94,7 +94,7 @@ public class Handler {
         formatChecker.checkFormat(InputSplitter.getCommand(input), InputSplitter.getArg(input));
     }
 
-    public void process(String input) throws LogException {
+    public void process(String input) throws LogException, IOException {
         String command = InputSplitter.getCommand(input);
         String argument = InputSplitter.getArg(input);
         CommandTypes type = commandManager.getCommand(command).getCommandClassifier();
