@@ -108,13 +108,13 @@ public class FileReaderMode implements ReaderMode {
                     Printer.printInfo(command);
                     if (!command.equals("execute_script")) {
                         String argument = InputSplitter.getArg(input);
-                        CommandTypes type = commandManager.getCommand(commandName).getCommandClassifier();
+                        CommandTypes type = commandManager.getCommand(command).getCommandClassifier();
                         switch (type) {
+                            case NO_INPUT_NEEDED -> invoker.call(command, new Request(argument, null));
                             case INPUT_NEEDED -> {
                                 Flat flat = build(commandList);
                                 invoker.call(command, new Request(argument, flat));
                             }
-                            case NO_INPUT_NEEDED -> invoker.call(command, new Request(argument, null));
                         }
                     } else {
                         Printer.printInfo("Skipped command execute_script");

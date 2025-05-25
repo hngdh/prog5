@@ -4,7 +4,7 @@ import io.Printer;
 import iostream.Handler;
 
 public class Main {
-    public static void main(String[] args) throws LogException, InterruptedException {
+    public static void main(String[] args) throws LogException {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
             Printer.printError("Uncaught exception in thread: " + t.getName());
             Printer.printError("Error during processing, please check log file.");
