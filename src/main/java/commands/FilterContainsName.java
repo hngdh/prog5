@@ -1,13 +1,15 @@
 package commands;
 
+import enums.CommandFormats;
+import enums.CommandTypes;
 import iostream.Receiver;
 import packets.Request;
 
-public class Filter_contains_name extends Command {
+public class FilterContainsName extends Command {
     private Receiver receiver;
 
-    public Filter_contains_name() {
-        super("filter_contains_name", "name", "display elements with given name");
+    public FilterContainsName() {
+        super("filter_contains_name", "name", "display elements with given name", CommandTypes.NO_INPUT_NEEDED, CommandFormats.WITH_STRING_ARG);
     }
 
     public void setReceiver(Receiver receiver) {

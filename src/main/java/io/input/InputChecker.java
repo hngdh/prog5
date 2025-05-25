@@ -1,8 +1,8 @@
-package io_utilities.working_with_input;
+package io.input;
 
 import exceptions.WrongInputException;
-import io_utilities.LogUtil2;
-import io_utilities.Printer;
+import io.LogUtil;
+import io.Printer;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -13,10 +13,6 @@ public class InputChecker {
     public static boolean checkInput(String input) {
         input = input.trim();
         return !input.isEmpty();
-    }
-
-    public static boolean checkID(String id) {
-        return checkInteger(id);
     }
 
     public static boolean checkDate(String date) {
@@ -70,7 +66,7 @@ public class InputChecker {
                 }
             }
         } catch (IOException e) {
-            LogUtil2.log(e);
+            LogUtil.log(e);
         }
         return false;
     }

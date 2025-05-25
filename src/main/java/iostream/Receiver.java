@@ -1,26 +1,49 @@
 package iostream;
 
-import cmd_utilities.CmdManager;
+import command_utilities.CommandManager;
 import exceptions.LogException;
-import io_utilities.Printer;
+import io.Printer;
 import main_objects.CollectionManager;
+import main_objects.Flat;
 import packets.Request;
+
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Objects;
 
 public class Receiver {
     private final CollectionManager collectionManager;
-    private final CmdManager cmdManager;
+    private final CommandManager commandManager;
+    String programState;
 
-    public Receiver(CollectionManager collectionManager, CmdManager cmdManager) {
-        this.cmdManager = cmdManager;
+    public Receiver(CollectionManager collectionManager, CommandManager commandManager) {
+        this.commandManager = commandManager;
         this.collectionManager = collectionManager;
+        programState = "start";
+    }
+
+    private boolean notEmpty() {
+        LinkedList<Flat> collection = collectionManager.getCollection();
+        if (collection.isEmpty()) {
+            Printer.printResult("The collection is empty.");
+            return false;
+        }
+        return true;
     }
 
     public void exit() {
-        System.exit(0);
+        programState = "stop";
+    }
+
+    public void start() throws LogException {
+        if (Objects.equals(programState, "stop")) {
+            programState = "start";
+            collectionManager.reload();
+        } else Printer.printResult("Program already started");
     }
 
     public void help() {
-        cmdManager.getCommandCollection().forEach((name, command) ->
+        commandManager.getCommandCollection().forEach((name, command) ->
                 Printer.printResult(command.getCommandInfo()));
     }
 
@@ -29,11 +52,14 @@ public class Receiver {
     }
 
     public void info() {
-        collectionManager.info();
+        Printer.printResult("Type of DS: LinkedList");
+        Printer.printResult("Number of elements: " + collectionManager.getCollection().size());
     }
 
     public void show() {
-        collectionManager.show();
+        if (notEmpty()) {
+            collectionManager.getCollection().forEach(Flat::printEverything);
+        }
     }
 
     public void sort() {
@@ -57,11 +83,21 @@ public class Receiver {
     }
 
     public void filter_contains_name(Request request) {
-        collectionManager.filter_contains_name(request);
+        if (notEmpty()) {
+            String name = request.getArgument();
+            for (Flat flat : collectionManager.getCollection()) {
+                if (flat.getName().contains(name)) flat.printEverything();
+            }
+        }
     }
 
     public void print_field_ascending_house() {
-        collectionManager.print_field_ascending_house();
+        if (notEmpty()) {
+            LinkedList<Flat> list = new LinkedList<>();
+            for (Flat flat : collectionManager.getCollection()) if (flat.getHouse() != null) list.add(flat);
+            list.sort(Comparator.comparing(a -> a.getHouse().getName()));
+            for (Flat flat : list) flat.printHouse();
+        }
     }
 
     public void remove_by_id(Request request) {

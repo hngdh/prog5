@@ -1,13 +1,15 @@
 package commands;
 
+import enums.CommandFormats;
+import enums.CommandTypes;
 import iostream.Receiver;
 import packets.Request;
 
-public class Remove_lower extends Command {
+public class RemoveLower extends Command {
     private Receiver receiver;
 
-    public Remove_lower() {
-        super("remove_lower", "{element}", "remove elements lower than given element");
+    public RemoveLower() {
+        super("remove_lower", "{element}", "remove elements lower than given element", CommandTypes.INPUT_NEEDED, CommandFormats.WITHOUT_ARG);
     }
 
     public void setReceiver(Receiver receiver) {

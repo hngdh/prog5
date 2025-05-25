@@ -1,23 +1,23 @@
 package iostream;
 
-import cmd_utilities.CmdManager;
+import command_utilities.CommandManager;
 import commands.Command;
 import exceptions.LogException;
-import io_utilities.Printer;
+import io.Printer;
 import packets.Request;
 
 public class Invoker {
-    private final CmdManager cmdManager;
+    private final CommandManager commandManager;
     private final Receiver receiver;
 
-    public Invoker(CmdManager cmdManager, Receiver receiver) {
-        this.cmdManager = cmdManager;
+    public Invoker(CommandManager commandManager, Receiver receiver) {
+        this.commandManager = commandManager;
         this.receiver = receiver;
     }
 
     public void call(String command, Request request) throws LogException {
         Printer.printCondition("> Executing " + command);
-        Command cmd = cmdManager.getCommand(command);
+        Command cmd = commandManager.getCommand(command);
         cmd.setReceiver(receiver);
         cmd.execute(request);
     }

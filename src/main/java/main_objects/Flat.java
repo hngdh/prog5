@@ -1,7 +1,7 @@
 package main_objects;
 
 import enums.Transport;
-import io_utilities.Printer;
+import io.Printer;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -114,16 +114,22 @@ public class Flat {
         Printer.printResult("Living space: " + this.livingSpace);
         Printer.printResult("Central heating: " + this.centralHeating);
         Printer.printResult("Transport: " + this.transport);
+        printHouse();
+    }
+
+    public void printHouse() {
         if (house != null) {
-            Printer.printResult("House (name, construction year, number of lifts): " + house.toString());
+            Printer.printCondition("*House's information*");
+            Printer.printResult("House's name: " + house.getName());
+            Printer.printResult("Construction year: " + house.getYear());
+            Printer.printResult("Number of lifts: " + house.getNumberOfLifts());
         } else {
-            Printer.printResult("House: no information");
+            Printer.printCondition("*House: no information*");
         }
     }
 
     public List<StringBuilder> getAllFields() {
         List<StringBuilder> fields = new LinkedList<>();
-        fields.add(new StringBuilder(Integer.toString(this.id)));
         fields.add(new StringBuilder(this.name));
         fields.add(new StringBuilder(String.valueOf(this.coordinates.getX())));
         fields.add(new StringBuilder(String.valueOf(this.coordinates.getY())));

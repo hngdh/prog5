@@ -1,8 +1,9 @@
-package io_utilities.working_with_input;
+package io.input;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
 
 public class InputReader {
     private InputStreamReader reader;
@@ -30,5 +31,14 @@ public class InputReader {
             }
         }
         return currentLine.toString();
+    }
+
+    public LinkedList readLines() throws IOException {
+        LinkedList<String> scriptLines = new LinkedList<>();
+        String line;
+        while (!(line = readLine()).isEmpty()) {
+            scriptLines.add(line.trim());
+        }
+        return scriptLines;
     }
 }

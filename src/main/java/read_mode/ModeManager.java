@@ -6,7 +6,7 @@ import iostream.Invoker;
 import java.util.HashMap;
 
 public class ModeManager {
-    private final HashMap<String, ReadMode> readModes = new HashMap<>();
+    private final HashMap<String, ReaderMode> readModes = new HashMap<>();
 
     public void init() {
         registerReadMode("execute_script", new FileReaderMode());
@@ -15,7 +15,7 @@ public class ModeManager {
         registerReadMode("add", new ConsoleReaderMode());
     }
 
-    public void registerReadMode(String command, ReadMode readMode) {
+    public void registerReadMode(String command, ReaderMode readMode) {
         readModes.put(command, readMode);
     }
 

@@ -1,16 +1,15 @@
 package iostream;
 
-import cmd_utilities.CmdClassifier;
-import cmd_utilities.CmdManager;
+import command_utilities.CommandManager;
 import enums.CommandTypes;
 import exceptions.LogException;
 import exceptions.WrongInputFormatException;
-import io_utilities.LogUtil2;
-import io_utilities.Printer;
-import io_utilities.working_with_input.FormatChecker;
-import io_utilities.working_with_input.InputChecker;
-import io_utilities.working_with_input.InputReader;
-import io_utilities.working_with_input.InputSplitter;
+import io.LogUtil;
+import io.Printer;
+import io.input.FormatChecker;
+import io.input.InputChecker;
+import io.input.InputReader;
+import io.input.InputSplitter;
 import main_objects.CollectionManager;
 import packets.Request;
 import read_mode.ModeManager;
@@ -19,10 +18,11 @@ import java.io.IOException;
 
 public class Handler {
     private InputReader inputReader;
-    private CmdClassifier cmdClassifier;
     private ModeManager modeManager;
     private Invoker invoker;
     private FormatChecker formatChecker;
+    private CommandManager commandManager;
+    private Receiver receiver;
 
     public Handler() {
         Printer.printInfo("This program helps you managing flats' information");
@@ -35,18 +35,15 @@ public class Handler {
             inputReader = new InputReader();
             inputReader.setReader();
             formatChecker = new FormatChecker();
-            formatChecker.init();
-            cmdClassifier = new CmdClassifier();
-            cmdClassifier.init();
 
             modeManager = new ModeManager();
             modeManager.init();
-            CmdManager cmdManager = new CmdManager();
-            cmdManager.init();
+            commandManager = new CommandManager();
+            commandManager.init();
             CollectionManager collectionManager = new CollectionManager(fileName);
 
-            Receiver receiver = new Receiver(collectionManager, cmdManager);
-            invoker = new Invoker(cmdManager, receiver);
+            receiver = new Receiver(collectionManager, commandManager);
+            invoker = new Invoker(commandManager, receiver);
 
             collectionManager.loadData();
         } catch (LogException e) {
@@ -54,8 +51,8 @@ public class Handler {
         }
     }
 
-    public void run() {
-        while (true) {
+    public void run() throws LogException {
+        while (receiver.programState.equals("start")) {
             try {
                 String input = inputReader.readLine();
                 input = input.trim();
@@ -66,9 +63,28 @@ public class Handler {
                 Printer.printError(e.toString());
                 Printer.printCondition("Command couldn't be executed!");
             } catch (IOException e) {
-                LogUtil2.log(e);
+                LogUtil.log(e);
             }
         }
+        standby();
+    }
+
+    public void standby() throws LogException {
+        Printer.printCondition("Program moved to standby mode. Use 'start' to continue program");
+        while (receiver.programState.equals("stop")) {
+            try {
+                String input = inputReader.readLine();
+                if (input.equals("start")) {
+                    receiver.start();
+                    Printer.printCondition("Program started over");
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (LogException e) {
+                throw new LogException();
+            }
+        }
+        run();
     }
 
     public void preprocess(String input) throws WrongInputFormatException {
@@ -81,7 +97,7 @@ public class Handler {
     public void process(String input) throws LogException {
         String command = InputSplitter.getCommand(input);
         String argument = InputSplitter.getArg(input);
-        CommandTypes type = cmdClassifier.getCommandClassifier(command);
+        CommandTypes type = commandManager.getCommand(command).getCommandClassifier();
         switch (type) {
             case INPUT_NEEDED -> modeManager.call(invoker, command, argument);
             case NO_INPUT_NEEDED -> invoker.call(command, new Request(argument, null));

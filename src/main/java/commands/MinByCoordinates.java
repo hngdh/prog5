@@ -1,13 +1,15 @@
 package commands;
 
+import enums.CommandFormats;
+import enums.CommandTypes;
 import iostream.Receiver;
 import packets.Request;
 
-public class Min_by_coordinates extends Command {
+public class MinByCoordinates extends Command {
     private Receiver receiver;
 
-    public Min_by_coordinates() {
-        super("clear", "", "display object from collection with minimum coordinate");
+    public MinByCoordinates() {
+        super("min_by_coordinates", "", "display object from collection with minimum coordinate", CommandTypes.NO_INPUT_NEEDED, CommandFormats.WITHOUT_ARG);
     }
 
     public void setReceiver(Receiver receiver) {

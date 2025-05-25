@@ -1,13 +1,15 @@
 package commands;
 
+import enums.CommandFormats;
+import enums.CommandTypes;
 import iostream.Receiver;
 import packets.Request;
 
-public class Remove_first extends Command {
+public class RemoveFirst extends Command {
     private Receiver receiver;
 
-    public Remove_first() {
-        super("remove_first", "", "remove first element in collection");
+    public RemoveFirst() {
+        super("remove_first", "", "remove first element in collection", CommandTypes.NO_INPUT_NEEDED, CommandFormats.WITHOUT_ARG);
     }
 
     public void setReceiver(Receiver receiver) {

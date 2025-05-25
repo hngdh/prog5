@@ -5,11 +5,11 @@ import enums.CommandTypes;
 import iostream.Receiver;
 import packets.Request;
 
-public class Sort extends Command {
+public class PrintFieldAscendingHouse extends Command {
     private Receiver receiver;
 
-    public Sort() {
-        super("sort", "", "sort collection in natural way", CommandTypes.NO_INPUT_NEEDED, CommandFormats.WITHOUT_ARG);
+    public PrintFieldAscendingHouse() {
+        super("print_field_ascending_house", "", "display in ascending order all elements in house's field", CommandTypes.NO_INPUT_NEEDED, CommandFormats.WITHOUT_ARG);
     }
 
     public void setReceiver(Receiver receiver) {
@@ -18,6 +18,6 @@ public class Sort extends Command {
 
     @Override
     public void execute(Request request) {
-        receiver.sort();
+        receiver.print_field_ascending_house();
     }
 }

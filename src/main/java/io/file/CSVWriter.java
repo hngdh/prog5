@@ -1,8 +1,5 @@
-package io_utilities.working_with_csv_file;
+package io.file;
 
-import io_utilities.Printer;
-
-import java.awt.print.PrinterException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;

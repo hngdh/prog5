@@ -6,6 +6,6 @@ public class WrongKeyException extends RuntimeException {
 
     @Override
     public String toString() {
-        return "Wrong key!";
+        return "Wrong key or key is not listed!";
     }
 }

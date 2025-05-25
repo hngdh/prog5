@@ -1,12 +1,12 @@
-package io_utilities;
+package io;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class LogUtil2 {
-    private static Logger log = Logger.getLogger(LogUtil2.class.getName());
+public class LogUtil {
+    private static final Logger log = Logger.getLogger(LogUtil.class.getName());
 
-    private LogUtil2() {
+    private LogUtil() {
     }
 
     public static void log(Exception e) {

@@ -1,4 +1,4 @@
-package io_utilities;
+package io;
 
 public class Printer {
     private static final String RED = "\u001B[31m";

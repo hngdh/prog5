@@ -1,23 +1,24 @@
 package commands;
 
+import enums.CommandFormats;
+import enums.CommandTypes;
 import exceptions.LogException;
 import iostream.Receiver;
 import packets.Request;
 
 public abstract class Command {
-    //Name of the command
     private final String name;
-
-    //Parameters of the command, empty string if no arguments needed
     private final String argument;
-
-    //Command's description
     private final String description;
+    private final CommandTypes classifier;
+    private final CommandFormats format;
 
-    public Command(String name, String argument, String description) {
+    public Command(String name, String argument, String description, CommandTypes classifier, CommandFormats format) {
         this.name = name;
         this.argument = argument;
         this.description = description;
+        this.classifier = classifier;
+        this.format = format;
     }
 
     public abstract void setReceiver(Receiver receiver);
@@ -38,5 +39,13 @@ public abstract class Command {
 
     public String getCommandInfo() {
         return (name + " " + argument).trim() + ": " + description;
+    }
+
+    public CommandTypes getCommandClassifier() {
+        return classifier;
+    }
+
+    public CommandFormats getCommandFormat() {
+        return format;
     }
 }

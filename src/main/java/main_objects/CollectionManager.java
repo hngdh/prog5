@@ -1,67 +1,69 @@
 package main_objects;
 
-import exceptions.IDTakenException;
 import exceptions.LogException;
 import exceptions.WrongDataException;
 import exceptions.WrongKeyException;
-import io_utilities.LogUtil2;
-import io_utilities.Printer;
-import io_utilities.working_with_csv_file.CSVReader;
-import io_utilities.working_with_csv_file.CSVWriter;
-import io_utilities.working_with_input.InputChecker;
-import io_utilities.working_with_input.InputReader;
+import io.LogUtil;
+import io.Printer;
+import io.file.CSVReader;
+import io.file.CSVWriter;
+import io.input.InputChecker;
+import io.input.InputReader;
 import packets.Request;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.LinkedList;
 
 public class CollectionManager {
     private final LinkedList<Flat> collection = new LinkedList<>();
     private final String fileName;
-    private int id;
 
     public CollectionManager(String fileName) {
         this.fileName = fileName;
     }
 
-    public void info() {
-        Printer.printResult("Type of DS: LinkedList");
-        Printer.printResult("Number of elements: " + collection.size());
+    private boolean notEmpty() {
+        if (collection.isEmpty()) {
+            Printer.printResult("The collection is empty.");
+            return false;
+        }
+        return true;
+    }
+
+    public LinkedList<Flat> getCollection() {
+        return collection;
+    }
+
+    public void reload() throws LogException {
+        collection.clear();
+        loadData();
     }
 
     public void clear() {
-        collection.clear();
-    }
-
-    public void show() {
-        if (collection.isEmpty()) {
-            Printer.printResult("The collection is empty.");
-        } else {
-            collection.forEach(Flat::printEverything);
-        }
+        while (!collection.isEmpty()) collection.removeFirst();
     }
 
     public void sort() {
-
-    }
-
-    public void execute_script() {
-
+        if (notEmpty()) {
+            collection.sort(Comparator.comparing(Flat::getName));
+        }
     }
 
     public void min_by_coordinates() {
-
+        if (notEmpty()) {
+            collection.sort(Comparator.comparing(a -> Float.parseFloat(a.getCoordinates().getX()) + Float.parseFloat(a.getCoordinates().getY())));
+        }
     }
 
     public void save() throws LogException {
         try {
             CSVWriter writer = new CSVWriter(fileName);
-            for (Flat flat: collection) {
+            for (Flat flat : collection) {
                 writer.writeLines(flat.getAllFields());
             }
-
         } catch (IOException e) {
-            LogUtil2.log(e);
+            LogUtil.log(e);
             throw new LogException();
         }
     }
@@ -71,35 +73,43 @@ public class CollectionManager {
         collection.add(flat);
     }
 
-    public void filter_contains_name(Request request) {
-
-    }
-
-    public void print_field_ascending_house() {
-
-    }
-
     public void remove_by_id(Request request) {
-
+        int id = Integer.parseInt(request.getArgument());
+        collection.remove(id - 1);
     }
 
     public void remove_first() {
-
+        if (notEmpty()) {
+            collection.removeFirst();
+        }
     }
 
     public void remove_lower(Request request) {
-
+        if (notEmpty()) {
+            Flat compareFlat = request.getFlat();
+            LinkedList<Flat> tempList = new LinkedList<>(collection);
+            for (Flat flat : tempList) {
+                if (flat.toString().compareTo(compareFlat.toString()) < 0) {
+                    collection.remove(flat);
+                }
+            }
+        }
     }
 
     public void update(Request request) {
         String key = request.getArgument();
-        if (key == null || key.isEmpty() || !InputChecker.checkInteger(key)) {
-            throw new WrongKeyException();
+        if (key == null || key.isEmpty() || !InputChecker.checkInteger(key) || Integer.parseInt(key) > collection.size()) {
+            try {
+                throw new WrongKeyException();
+            } catch (WrongKeyException e) {
+                Printer.printError(e.toString());
+            }
         } else {
             Flat flat = request.getFlat();
+            int id = Integer.parseInt(key) - 1;
             flat.setId(Integer.parseInt(key));
-            collection.remove(key);
-            collection.add(flat);
+            collection.remove(id);
+            collection.add(id, flat);
         }
     }
 
@@ -113,19 +123,15 @@ public class CollectionManager {
             while ((str = inputReader.readLine()) != null && !str.isEmpty()) {
                 try {
                     Flat flat = reader.loadObj(str);
-                    String key = flat.getId().toString();
-                    if (false) {
-                        throw new IDTakenException();
-                    } else {
-                        collection.add(flat);
-                    }
+                    flat.setId(counter);
+                    collection.add(flat);
                 } catch (WrongDataException e) {
-                    Printer.printError("Can't load flat's information on line " + String.valueOf(counter));
+                    Printer.printError("Can't load flat's information on line " + counter);
                 }
                 counter++;
             }
         } catch (IOException e) {
-            LogUtil2.log(e);
+            LogUtil.log(e);
             throw new LogException();
         }
         Printer.printResult("Loaded " + collection.size() + " flat(s) from the file.");

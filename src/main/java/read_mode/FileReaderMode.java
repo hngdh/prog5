@@ -1,14 +1,16 @@
 package read_mode;
 
-import cmd_utilities.CmdClassifier;
-import cmd_utilities.CmdManager;
+import command_utilities.CommandManager;
 import enums.CommandTypes;
 import enums.FlatDataTypes;
 import enums.HouseDataTypes;
-import exceptions.*;
-import io_utilities.LogUtil2;
-import io_utilities.Printer;
-import io_utilities.working_with_input.*;
+import exceptions.LogException;
+import exceptions.WrongCommandException;
+import exceptions.WrongFileInputException;
+import exceptions.WrongInputException;
+import io.LogUtil;
+import io.Printer;
+import io.input.*;
 import iostream.Invoker;
 import main_objects.Flat;
 import packets.Request;
@@ -17,44 +19,50 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class FileReaderMode implements ReadMode {
-    private final CmdManager commandManager;
-    private final CmdClassifier commandClassifier;
+public class FileReaderMode implements ReaderMode {
+    private final CommandManager commandManager;
 
     public FileReaderMode() {
-        commandClassifier = new CmdClassifier();
-        commandManager = new CmdManager();
-        commandManager.init();
+        commandManager = new CommandManager();
         commandManager.init();
     }
 
-    public Flat build(InputReader reader) throws LogException {
+    public Flat build(LinkedList commandList) throws LogException {
         List<String> flatInfo = new LinkedList<>();
         List<String> houseInfo = new LinkedList<>();
 
         try {
-            flatInfo.add("0");
-            flatInfo.add(getFlatFileInput(reader, FlatDataTypes.STRING));
-            flatInfo.add(getFlatFileInput(reader, FlatDataTypes.COORDINATE_X));
-            flatInfo.add(getFlatFileInput(reader, FlatDataTypes.COORDINATE_Y));
-            flatInfo.add(getFlatFileInput(reader, FlatDataTypes.DATE));
-            flatInfo.add(getFlatFileInput(reader, FlatDataTypes.AREA));
-            flatInfo.add(getFlatFileInput(reader, FlatDataTypes.ROOMS));
-            flatInfo.add(getFlatFileInput(reader, FlatDataTypes.SPACE));
-            flatInfo.add(getFlatFileInput(reader, FlatDataTypes.HEATING));
-            flatInfo.add(getFlatFileInput(reader, FlatDataTypes.TRANSPORT));
-            houseInfo.add(getHouseFileInput(reader, HouseDataTypes.STRING));
-            houseInfo.add(getHouseFileInput(reader, HouseDataTypes.YEAR));
-            houseInfo.add(getHouseFileInput(reader, HouseDataTypes.LIFTS));
+            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.STRING));
+            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.COORDINATE_X));
+            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.COORDINATE_Y));
+            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.DATE));
+            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.AREA));
+            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.ROOMS));
+            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.SPACE));
+            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.HEATING));
+            flatInfo.add(getFlatFileInput(commandList, FlatDataTypes.TRANSPORT));
+            if (commandList.getFirst().toString().equals("yes")) {
+                commandList.removeFirst();
+                houseInfo.add(getHouseFileInput(commandList, HouseDataTypes.STRING));
+                houseInfo.add(getHouseFileInput(commandList, HouseDataTypes.YEAR));
+                houseInfo.add(getHouseFileInput(commandList, HouseDataTypes.LIFTS));
+            } else {
+                commandList.removeFirst();
+                for (int i = 0; i < 3; i++) {
+                    houseInfo.add("null");
+                    commandList.removeFirst();
+                }
+            }
         } catch (IOException e) {
-            LogUtil2.log(e);
+            LogUtil.log(e);
             throw new LogException();
         }
         return Builder.buildFlat(flatInfo, houseInfo);
     }
 
-    public String getFlatFileInput(InputReader reader, FlatDataTypes dataType) throws IOException {
-        String str = reader.readLine();
+    public String getFlatFileInput(LinkedList commandList, FlatDataTypes dataType) throws IOException {
+        String str = commandList.getFirst().toString();
+        commandList.removeFirst();
         boolean check = ObjInputChecker.checkFlatInput(str, dataType);
         if (check) {
             return str;
@@ -63,8 +71,9 @@ public class FileReaderMode implements ReadMode {
         }
     }
 
-    public String getHouseFileInput(InputReader reader, HouseDataTypes dataType) throws IOException {
-        String str = reader.readLine();
+    public String getHouseFileInput(LinkedList commandList, HouseDataTypes dataType) throws IOException {
+        String str = commandList.getFirst().toString();
+        commandList.removeFirst();
         boolean check = ObjInputChecker.checkHouseInput(str, dataType);
         if (check) {
             return str;
@@ -73,50 +82,48 @@ public class FileReaderMode implements ReadMode {
         }
     }
 
-    public String getNextCommand(InputReader reader) throws IOException, LogException {
-        String input = reader.readLine();
-        if (input != null || input.isEmpty()) return null;
+    public String getCommand(LinkedList commandList) throws IOException {
+        String input = commandList.getFirst().toString();
+        commandList.removeFirst();
+        if (input == null || input.isEmpty()) return null;
         if (!InputChecker.checkInput(input)) {
             throw new WrongFileInputException();
         }
-        if (!commandManager.isCommand(InputSplitter.getCommand(input.toLowerCase()))) {
+        if (!commandManager.isCommand(InputSplitter.getCommand(input.toLowerCase())))
             throw new WrongCommandException();
-        }
         return input;
     }
 
-    public void process(String currentFile, Invoker invoker) throws LogException, IOException {
+    @Override
+    public void executeMode(Invoker invoker, String commandName, String currentFile) throws LogException {
         try {
             invoker.call("execute_script", new Request(null, null));
             InputReader inputReader = new InputReader();
             inputReader.setReader(currentFile);
-            String input;
-            while ((input = getNextCommand(inputReader)) != null) {
-                String nameNewCommand = InputSplitter.getCommand(input);
-                String argument = InputSplitter.getArg(input);
-                CommandTypes commandType = commandClassifier.getCommandClassifier(nameNewCommand);
-                Printer.printCondition("--- Current file: " + currentFile + " ---");
-                switch (commandType) {
-                    case NO_INPUT_NEEDED -> invoker.call(nameNewCommand, new Request(argument, null));
-                    case INPUT_NEEDED -> {
-                        if (!nameNewCommand.equals("execute_script")) {
-                            Flat flat = build(inputReader);
-                            try {
-                                invoker.call(nameNewCommand, new Request(argument, flat));
-                            } catch (IDTakenException e) {
-                                Printer.printError(e.toString());
+            LinkedList commandList = inputReader.readLines();
+            while (!commandList.isEmpty()) {
+                String input;
+                if ((input = getCommand(commandList)) != null) {
+                    String command = InputSplitter.getCommand(input);
+                    Printer.printInfo(command);
+                    if (!command.equals("execute_script")) {
+                        String argument = InputSplitter.getArg(input);
+                        CommandTypes type = commandManager.getCommand(commandName).getCommandClassifier();
+                        switch (type) {
+                            case INPUT_NEEDED -> {
+                                Flat flat = build(commandList);
+                                invoker.call(command, new Request(argument, flat));
                             }
+                            case NO_INPUT_NEEDED -> invoker.call(command, new Request(argument, null));
                         }
+                    } else {
+                        Printer.printInfo("Skipped command execute_script");
                     }
                 }
             }
         } catch (IOException e) {
-            LogUtil2.log(e);
+            LogUtil.log(e);
             throw new LogException();
         }
-    }
-
-    @Override
-    public void executeMode(Invoker invoker, String commandName, String arg) throws LogException {
     }
 }

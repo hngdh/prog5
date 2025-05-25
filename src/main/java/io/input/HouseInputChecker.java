@@ -1,4 +1,4 @@
-package io_utilities.working_with_input;
+package io.input;
 
 public class HouseInputChecker extends InputChecker {
     public HouseInputChecker() {

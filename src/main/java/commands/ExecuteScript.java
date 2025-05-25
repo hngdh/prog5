@@ -5,11 +5,11 @@ import enums.CommandTypes;
 import iostream.Receiver;
 import packets.Request;
 
-public class Sort extends Command {
+public class ExecuteScript extends Command {
     private Receiver receiver;
 
-    public Sort() {
-        super("sort", "", "sort collection in natural way", CommandTypes.NO_INPUT_NEEDED, CommandFormats.WITHOUT_ARG);
+    public ExecuteScript() {
+        super("execute_script", "file_name", "read and execute script from file. Commands in the script formatted the same as in interactive mode", CommandTypes.INPUT_NEEDED, CommandFormats.WITH_STRING_ARG);
     }
 
     public void setReceiver(Receiver receiver) {
@@ -18,6 +18,6 @@ public class Sort extends Command {
 
     @Override
     public void execute(Request request) {
-        receiver.sort();
+        receiver.execute_script();
     }
 }
