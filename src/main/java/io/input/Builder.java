@@ -11,6 +11,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * The {@code Builder} class provides static methods for parsing data from a list of strings and constructing
+ * {@link main_objects.Flat} and related objects ({@link main_objects.House}, {@link main_objects.Coordinates}).
+ * It handles parsing and validation of data, including handling "null" values from files and throwing appropriate exceptions
+ * if parsing fails or data is invalid.
+ */
 public class Builder {
     public static Flat buildFlat(List<String> flatInfo, List<String> houseInfo) throws LogException {
         Flat flat = new Flat();

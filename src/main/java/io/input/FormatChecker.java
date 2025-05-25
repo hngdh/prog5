@@ -4,6 +4,10 @@ import command_utilities.CommandManager;
 import enums.CommandFormats;
 import exceptions.WrongInputFormatException;
 
+/**
+ * The {@code FormatChecker} class is responsible for validating the format of user commands.
+ * It checks whether a given command has the correct type of argument (or no argument) as defined in command's properties.
+ */
 public class FormatChecker {
     private final CommandManager commandManager;
 

@@ -1,5 +1,9 @@
 package io.input;
 
+/**
+ * The {@code HouseInputChecker} class provides static methods for validating input strings related to {@link main_objects.House} properties.
+ * It extends the {@link InputChecker} class and provides specific checks for name, construction year and number of lifts.
+ */
 public class HouseInputChecker extends InputChecker {
     public HouseInputChecker() {
     }

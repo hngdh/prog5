@@ -8,6 +8,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The {@code Flat} class represents a flat with attributes such as ID, name, coordinates, ...
+ * and contains getters and setters, as well as needed methods to print flat's information.
+ */
 public class Flat {
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой

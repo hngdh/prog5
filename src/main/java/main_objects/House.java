@@ -2,6 +2,10 @@ package main_objects;
 
 import java.util.Objects;
 
+/**
+ * The {@code House} class represents a house with attributes name, construction year and number of lifts.
+ * It contains properties' getters and setters.
+ */
 public class House {
     private String name; //Поле не может быть null
     private Integer year; //Значение поля должно быть больше 0

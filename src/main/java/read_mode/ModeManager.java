@@ -6,6 +6,10 @@ import iostream.Invoker;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * The {@code ModeManager} class manages different reading modes for commands, such as reading from the console
+ * or reading from a file.  It allows associating specific commands with specific {@link ReaderMode} implementations.
+ */
 public class ModeManager {
     private final HashMap<String, ReaderMode> readModes = new HashMap<>();
 

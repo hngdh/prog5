@@ -1,5 +1,9 @@
 package exceptions;
 
+/**
+ * The {@code LogException} class represents an exception that is thrown when there was an error during work of program.
+ * It provides a general error message to inform the user about error being logged in log file.
+ */
 public class LogException extends Exception {
     public LogException() {
     }

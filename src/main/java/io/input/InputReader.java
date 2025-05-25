@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 
+/**
+ * The {@code InputReader} class provides a convenient way to read input from either a file or the standard input (console).
+ * It uses an {@link InputStreamReader} to read characters from the input stream and provides a method to read a line of text.
+ */
 public class InputReader {
     private InputStreamReader reader;
 

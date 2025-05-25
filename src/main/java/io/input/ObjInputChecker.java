@@ -3,6 +3,10 @@ package io.input;
 import enums.FlatDataTypes;
 import enums.HouseDataTypes;
 
+/**
+ * The {@code ObjInputChecker} class provides static methods for validating input strings for different object properties,
+ * specifically for {@link main_objects.Flat} and {@link main_objects.House} objects.
+ */
 public class ObjInputChecker {
     public ObjInputChecker() {
     }

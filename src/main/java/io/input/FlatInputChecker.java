@@ -2,6 +2,10 @@ package io.input;
 
 import enums.Transport;
 
+/**
+ * The {@code HouseInputChecker} class provides static methods for validating input strings related to {@link main_objects.Flat} properties.
+ * It extends the {@link InputChecker} class and provides specific checks for name, coordination, area, ...
+ */
 public class FlatInputChecker extends InputChecker {
     public FlatInputChecker() {
     }

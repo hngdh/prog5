@@ -9,6 +9,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * The {@code InputChecker} class provides static utility methods for validating user input.
+ * It includes methods for checking the general format of input, validating strings, checking if a string represents an integer,
+ * determining if a string is empty, and prompting the user for a yes/no confirmation.
+ */
 public class InputChecker {
     public static boolean checkInput(String input) {
         input = input.trim();

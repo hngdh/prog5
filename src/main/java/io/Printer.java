@@ -1,5 +1,10 @@
 package io;
 
+/**
+ * The {@code Printer} class provides utility methods for printing colored output to the console.
+ * It uses ANSI escape codes to color the text, providing different colors for different types of information.
+ * This can improve the readability and clarity of console output.
+ */
 public class Printer {
     private static final String RED = "\u001B[31m";
     private static final String GREEN = "\u001B[32m";

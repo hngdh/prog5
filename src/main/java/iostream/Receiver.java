@@ -11,6 +11,11 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Objects;
 
+/**
+ * The {@code Receiver} class contains the actual implementation of the commands. It interacts with the
+ * {@link CollectionManager} to perform operations on the collection and the {@link CommandManager} to access
+ * command information.  It handles user requests by delegating to the appropriate methods of the CollectionManager.
+ */
 public class Receiver {
     private final CollectionManager collectionManager;
     private final CommandManager commandManager;

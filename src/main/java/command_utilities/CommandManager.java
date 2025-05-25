@@ -4,6 +4,10 @@ import commands.*;
 
 import java.util.HashMap;
 
+/**
+ * The {@code CommandManager} class manages the registration and retrieval of commands.
+ * It stores commands in a HashMap for quick access, including properties' getters.
+ */
 public class CommandManager {
     private final HashMap<String, Command> commandCollection = new HashMap<>();
 

@@ -1,5 +1,9 @@
 package io.input;
 
+/**
+ * The {@code InputSplitter} class provides static utility methods for splitting input into two parts,
+ * representing command and its argument.
+ */
 public class InputSplitter {
     public InputSplitter() {
     }
