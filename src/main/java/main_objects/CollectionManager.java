@@ -79,8 +79,10 @@ public class CollectionManager {
     }
 
     public void remove_by_id(Request request) {
-        int id = Integer.parseInt(request.getArgument());
-        collection.remove(id - 1);
+        if (notEmpty()) {
+            int id = Integer.parseInt(request.getArgument());
+            collection.remove(id - 1);
+        }
     }
 
     public void remove_first() {
