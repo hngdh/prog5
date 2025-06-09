@@ -7,19 +7,19 @@ import main_objects.Flat;
  * It is used to encapsulate the data needed for various operations on the collection of flats.
  */
 public class Request {
-    private final String argument;
-    private final Flat flat;
+  private final String argument;
+  private final Flat flat;
 
-    public Request(String argument, Flat flat) {
-        this.argument = argument;
-        this.flat = flat;
-    }
+  public Request(String argument, Flat flat) {
+    this.argument = argument;
+    this.flat = flat;
+  }
 
-    public String getArgument() {
-        return argument;
-    }
+  public String getArgument() {
+    return argument;
+  }
 
-    public Flat getFlat() {
-        return flat;
-    }
+  public Flat getFlat() {
+    return flat;
+  }
 }
