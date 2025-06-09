@@ -1,15 +1,15 @@
 package exceptions;
 
 /**
- * The {@code WrongKeyException} class represents an exception that is thrown when the user provides a wrong key or a key not listed.
- * It extends the {@code Exception} class and provides a specific error message to inform the user about the incorrect key.
+ * The {@code WrongKeyException} class represents an exception that is thrown when the user provides
+ * a wrong key or a key not listed. It extends the {@code Exception} class and provides a specific
+ * error message to inform the user about the incorrect key.
  */
 public class WrongKeyException extends RuntimeException {
-    public WrongKeyException() {
-    }
+  public WrongKeyException() {}
 
-    @Override
-    public String toString() {
-        return "Wrong key or key is not listed!";
-    }
+  @Override
+  public String toString() {
+    return "Wrong key or key is not listed!";
+  }
 }
